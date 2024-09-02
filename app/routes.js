@@ -20,5 +20,9 @@ router.get("/datasette/performance.json", async (req, res) => {
     },
   )
 
-  res.json(await response.json())
+  try {
+    res.json(await response.json())
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
 })
