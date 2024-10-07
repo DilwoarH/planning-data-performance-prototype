@@ -4,6 +4,7 @@
 //
 
 const govukPrototypeKit = require("govuk-prototype-kit")
+const getStats = require("./services/PerformanceService").getStats
 const router = govukPrototypeKit.requests.setupRouter()
 const runQuery = require("./services/DatasetteService").runQuery
 
@@ -12,11 +13,8 @@ router.get("/", (req, res) => {
   res.render("index")
 })
 
-router.get("/stats", (req, res) => {
-  res.json({
-    uptime: process.uptime(),
-    memory: process.memoryUsage(),
-  })
+router.get("/stats", async (req, res) => {
+  res.json(await getStats())
 })
 
 router.get("/datasette/:database_name.json", async (req, res) => {
