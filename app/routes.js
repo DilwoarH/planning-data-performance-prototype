@@ -5,23 +5,23 @@
 
 const govukPrototypeKit = require("govuk-prototype-kit")
 const router = govukPrototypeKit.requests.setupRouter()
+const runQuery = require("./services/DatasetteService").runQuery
 
 // Add your routes here
-router.get("/datasette/performance.json", async (req, res) => {
-  try {
-    const response = await fetch(
-      `https://datasette.planning.data.gov.uk/performance.json?sql=${encodeURIComponent(
-        req.query.sql,
-      )}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      },
-    )
+router.get("/", (req, res) => {
+  res.render("index")
+})
 
-    res.json(await response.json())
+router.get("/stats", (req, res) => {
+  res.json({
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+  })
+})
+
+router.get("/datasette/:database_name.json", async (req, res) => {
+  try {
+    res.json(await runQuery(req.query.sql, req.params.database_name))
   } catch (e) {
     res.status(500).json({ error: e.message })
   }
