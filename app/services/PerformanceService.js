@@ -13,9 +13,7 @@ const getDatasetCount = async function () {
     dataset.dataset
   `
 
-  const data = await runQuery(query)
-
-  return data
+  return await runQuery(query)
 }
 
 const getStats = async function () {
