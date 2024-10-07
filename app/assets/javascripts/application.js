@@ -9,7 +9,7 @@ window.GOVUKPrototypeKit.documentReady(() => {
 
 document.addEventListener("DOMContentLoaded", async function () {
   let data = await fetch(
-    "/datasette/performance.json?sql=select+%22name%22%2C+sum%28active_endpoint_count%29+as+%22active_endpoints%22+from+provision_summary%0D%0Agroup+by+organisation%0D%0Ahaving+active_endpoints+%3E+0%0D%0Aorder+by+active_endpoints+desc+limit+10",
+    `/datasette/performance.json?sql=select+organisation_name+as+"name"%2C+sum%28active_endpoint_count%29+as+"active_endpoints"+from+provision_summary%0D%0Agroup+by+organisation%0D%0Ahaving+active_endpoints+>+0%0D%0Aorder+by+active_endpoints+desc+limit+10`,
     {
       headers: {
         "Content-Type": "application/json",
