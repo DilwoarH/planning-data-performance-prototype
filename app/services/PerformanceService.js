@@ -22,29 +22,39 @@ const getDatasetCount = async function () {
   return datasets.rows.length
 }
 
-const getLpas = async function () {
-  const query = `SELECT
-      p.cohort,
-      p.organisation,
-      c.start_date as cohort_start_date
-    FROM
-      provision p
-      INNER JOIN cohort c on c.cohort = p.cohort
-    WHERE
-      p.provision_reason = "expected"
-      AND p.project == "open-digital-planning"
-    GROUP BY
-      p.organisation
-    ORDER BY
-      cohort_start_date,
-      p.cohort
+const getTotalLpaCount = async function () {
+  const query = `select
+    count(*) as "lpa_count"
+    from
+      organisation
+    where
+      "organisation" like "local-authority%"
   `
 
-  return await runQuery(query)
+  const lpas = await runQuery(query)
+
+  return lpas.rows?.[0]?.[0] ?? null
 }
 
-const getLpaCount = async function () {
-  const lpas = await getLpas()
+const getLpaInCohertCount = async function () {
+  const query = `SELECT
+    p.cohort,
+    p.organisation,
+    c.start_date as cohort_start_date
+  FROM
+    provision p
+    INNER JOIN cohort c on c.cohort = p.cohort
+  WHERE
+    p.provision_reason = "expected"
+    AND p.project == "open-digital-planning"
+  GROUP BY
+    p.organisation
+  ORDER BY
+    cohort_start_date,
+    p.cohort
+  `
+
+  const lpas = await runQuery(query)
 
   return lpas.rows.length
 }
@@ -81,8 +91,8 @@ const getStats = async function () {
       increase_last_30_days_percentage: null,
     },
     local_planning_authorities: {
-      total: 77,
-      total_in_cohert: await getLpaCount(),
+      total: await getTotalLpaCount(),
+      total_in_cohert: await getLpaInCohertCount(),
       count_with_data_sources: null,
       count_with_no_data_sources: null,
       increase_last_30_days: null,
