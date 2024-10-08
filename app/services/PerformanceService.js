@@ -1,6 +1,6 @@
 const runQuery = require("./DatasetteService").runQuery
 
-const getDatasetCount = async function () {
+const getDatasets = async function () {
   const query = `SELECT
     dataset.*,
     GROUP_CONCAT(dataset_theme.theme, ';') AS themes
@@ -16,12 +16,43 @@ const getDatasetCount = async function () {
   return await runQuery(query)
 }
 
-const getStats = async function () {
-  const datasets = await getDatasetCount()
+const getDatasetCount = async function () {
+  const datasets = await getDatasets()
 
+  return datasets.rows.length
+}
+
+const getLpas = async function () {
+  const query = `SELECT
+      p.cohort,
+      p.organisation,
+      c.start_date as cohort_start_date
+    FROM
+      provision p
+      INNER JOIN cohort c on c.cohort = p.cohort
+    WHERE
+      p.provision_reason = "expected"
+      AND p.project == "open-digital-planning"
+    GROUP BY
+      p.organisation
+    ORDER BY
+      cohort_start_date,
+      p.cohort
+  `
+
+  return await runQuery(query)
+}
+
+const getLpaCount = async function () {
+  const lpas = await getLpas()
+
+  return lpas.rows.length
+}
+
+const getStats = async function () {
   return {
     datasets: {
-      count: datasets.rows.length,
+      count: await getDatasetCount(),
       article_4_direction_coverage_percentage: null,
       article_4_direction_coverage_percentage_increase_last_30_days: null,
       article_4_direction_area_coverage_percentage: null,
@@ -50,7 +81,8 @@ const getStats = async function () {
       increase_last_30_days_percentage: null,
     },
     local_planning_authorities: {
-      total: null,
+      total: 77,
+      total_in_cohert: await getLpaCount(),
       count_with_data_sources: null,
       count_with_no_data_sources: null,
       increase_last_30_days: null,
