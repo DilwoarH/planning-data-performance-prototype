@@ -26,15 +26,21 @@
         authorities (LPAs) across England.
       </p>
 
-      <h3 class="govuk-heading-m">93 datasets on the platform</h3>
+      <h3 class="govuk-heading-m">
+        {{ stats.datasets.count }} datasets on the platform
+      </h3>
 
-      <p class="govuk-body">93 datasets available from 377 organisations.</p>
       <p class="govuk-body">
-        138 data sources out of 584 provided by 33 local planning authorities. 7
-        up from last month (+1.2%).
+        {{ stats.datasets.count }} datasets available from {{
+        stats.local_planning_authorities.total }} organisations.
       </p>
       <p class="govuk-body">
-        2 new local planning authorities providing data this month (+2.7%).
+        [138] data sources out of [584] provided by {{
+        stats.local_planning_authorities.total_in_cohort }} local planning
+        authorities. [7] up from last month (+[1.2]%).
+      </p>
+      <p class="govuk-body">
+        [2] new local planning authorities providing data this month (+[2.7]%).
       </p>
       <p class="govuk-body">
         You can
@@ -56,11 +62,11 @@
         entities that need reconciling.
       </p>
       <p class="govuk-body">
-        47 data sources on the platform with no issues (34%).
+        [47] data sources on the platform with no issues ([34]%).
       </p>
       <p class="govuk-body">
-        26 data sources on the platform conform to the specifications (19%). 2
-        improved last month (+2%).
+        [26] data sources on the platform conform to the specifications ([19]%).
+        [2] improved last month (+[2]%).
       </p>
     </section>
 
@@ -69,8 +75,10 @@
 
       <p class="govuk-body">
         We aim to provide datasets covering the entirety of England. We’re
-        currently working with 73 out of 311 local planning authorities to start
-        providing 8 datasets nationally.
+        currently working with {{
+        stats.local_planning_authorities.total_in_cohort }} out of {{
+        stats.local_planning_authorities.total }} local planning authorities to
+        start providing 8 datasets nationally.
       </p>
       <p class="govuk-body">Datasets compiled from LPA sources:</p>
       <ul class="govuk-list govuk-list--bullet">

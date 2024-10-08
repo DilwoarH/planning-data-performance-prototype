@@ -9,8 +9,10 @@ const router = govukPrototypeKit.requests.setupRouter()
 const runQuery = require("./services/DatasetteService").runQuery
 
 // Add your routes here
-router.get("/", (req, res) => {
-  res.render("index")
+router.get("/", async (req, res) => {
+  res.render("index", {
+    stats: await getStats(),
+  })
 })
 
 router.get("/stats", async (req, res) => {

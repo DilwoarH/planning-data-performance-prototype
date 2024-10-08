@@ -36,7 +36,7 @@ const getTotalLpaCount = async function () {
   return lpas.rows?.[0]?.[0] ?? null
 }
 
-const getLpaInCohertCount = async function () {
+const getLpaInCohortCount = async function () {
   const query = `SELECT
     p.cohort,
     p.organisation,
@@ -92,7 +92,7 @@ const getStats = async function () {
     },
     local_planning_authorities: {
       total: await getTotalLpaCount(),
-      total_in_cohert: await getLpaInCohertCount(),
+      total_in_cohort: await getLpaInCohortCount(),
       count_with_data_sources: null,
       count_with_no_data_sources: null,
       increase_last_30_days: null,
